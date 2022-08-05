@@ -51,6 +51,8 @@ def clone_and_test(name, key, url, command)
 			file.puts nil, "# Added by external testing:"
 			file.puts("gem #{name.to_s.dump}, path: '../../'")
 		end
+
+		system("bundle", "install", chdir: path)
 	end
 
 	system(*command, chdir: path) or abort("External tests #{key} failed!")
