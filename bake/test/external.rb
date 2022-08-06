@@ -1,16 +1,24 @@
 # frozen_string_literal: true
 
+DEFAULT_EXTERNALS_PATH = 'config/external.yaml'
+DEFAULT_COMMAND = "bake test"
+
 # Run external tests.
 # @parameter gemspec [String] The input gemspec path.
 def external(input: nil, gemspec: self.find_gemspec)
 	require 'bundler'
 	require 'yaml'
 
-	input ||= YAML.load_file('config/external.yaml', symbolize_names: true)
+	if input.nil? and File.exist?(DEFAULT_EXTERNALS_PATH)
+		# symbolize_names is unsupported on Ruby 2.7
+		input = YAML.load_file(DEFAULT_EXTERNALS_PATH) # , symbolize_names: true)
+	end
 
 	input.each do |key, config|
+		config.transform_keys!(&:to_sym);
+
 		url = config[:url]
-		command = config[:command]
+		command = config.fetch(:command, DEFAULT_COMMAND)
 
 		Bundler.with_unbundled_env do
 			clone_and_test(gemspec.name, key, url, command)
