@@ -16,7 +16,7 @@ bake:
 $ bake test:external
 ```
 
-It will clone the repositories and run the given command after injecting your current gem into their local gemfile.
+It will clone the listed repositories, inject your current gem into the fetched gemfile, and run the given command. This has the effect of running their test suite with your latest code. You can use this as part of your test suite to receive feedback that a downstream dependent codebase is okay or broken because of a change you've made.
 
 ## Contributing
 
