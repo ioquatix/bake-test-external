@@ -16,7 +16,7 @@ bake:
 $ bake test:external
 ```
 
-It will clone the repositories and run the given command.
+It will clone the repositories and run the given command after injecting your current gem into their local gemfile.
 
 ## Contributing
 
