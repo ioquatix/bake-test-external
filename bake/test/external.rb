@@ -47,7 +47,7 @@ def clone_and_test(name, key, url, command)
 	
 	unless File.directory?(path)
 		FileUtils.mkdir_p path
-		system("git", "clone", url, path)
+		system("git", "clone", "--depth", "1", url, path)
 
 		# I tried using `bundle config --local local.async ../` but it simply doesn't work.
 		# system("bundle", "config", "--local", "local.async", __dir__, chdir: path)
