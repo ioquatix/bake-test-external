@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
 	spec.version = Bake::Test::External::VERSION
 	
 	spec.summary = "Run external test suites to check for breakage."
-	spec.authors = ["Samuel Williams"]
+	spec.authors = ["Samuel Williams", "Akshay Birajdar"]
 	spec.license = "MIT"
 	
 	spec.cert_chain  = ['release.cert']
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
 		"funding_uri" => "https://github.com/sponsors/ioquatix/",
 	}
 	
-	spec.files = Dir.glob('{bake,lib}/**/*', File::FNM_DOTMATCH, base: __dir__)
+	spec.files = Dir.glob(['{bake,lib}/**/*', '*.md'], File::FNM_DOTMATCH, base: __dir__)
 	
 	spec.add_dependency "bake"
 	

@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Released under the MIT License.
+# Copyright, 2022, by Samuel Williams.
+# Copyright, 2022, by Akshay Birajdar.
+
 DEFAULT_EXTERNALS_PATH = 'config/external.yaml'
 DEFAULT_COMMAND = "bake test"
 
