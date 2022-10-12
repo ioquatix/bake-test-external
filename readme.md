@@ -12,6 +12,7 @@ Add a file `config/external.yaml` to your project, and add entries like:
 bake:
   url: https://github.com/ioquatix/bake.git
   command: bundle exec rspec
+  # branch: optional-branch-name
 ```
 
 ``` bash

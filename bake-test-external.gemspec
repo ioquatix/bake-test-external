@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
 	spec.version = Bake::Test::External::VERSION
 	
 	spec.summary = "Run external test suites to check for breakage."
-	spec.authors = ["Samuel Williams", "Akshay Birajdar"]
+	spec.authors = ["Samuel Williams", "Akshay Birajdar", "Hiroaki Osawa"]
 	spec.license = "MIT"
 	
 	spec.cert_chain  = ['release.cert']

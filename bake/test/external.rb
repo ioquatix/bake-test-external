@@ -3,6 +3,7 @@
 # Released under the MIT License.
 # Copyright, 2022, by Samuel Williams.
 # Copyright, 2022, by Akshay Birajdar.
+# Copyright, 2022, by Hiroaki Osawa.
 
 DEFAULT_EXTERNALS_PATH = 'config/external.yaml'
 DEFAULT_COMMAND = "bake test"
