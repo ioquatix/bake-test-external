@@ -43,10 +43,14 @@ def find_gemspec(glob = "*.gemspec")
 end
 
 def clone_and_test(name, key, config)
+	path = clone_repository(name, key, config)
+	test_repository(path, config) or abort("External tests #{key} failed!")
+end
+
+def clone_repository(name, key, config)
 	require 'fileutils'
 	
 	url = config[:url]
-	command = config.fetch(:command, DEFAULT_COMMAND)
 	
 	path = "external/#{key}"
 	
@@ -84,5 +88,11 @@ def clone_and_test(name, key, config)
 		system("bundle", "install", chdir: path)
 	end
 	
-	system(*command, chdir: path) or abort("External tests #{key} failed!")
+	return path
+end
+
+def test_repository(path, config)
+	command = config.fetch(:command, DEFAULT_COMMAND)
+	
+	system(*command, chdir: path)
 end
