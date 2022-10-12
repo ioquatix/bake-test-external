@@ -58,16 +58,20 @@ def clone_and_test(name, key, config)
 		
 		gemfile_paths = ["#{path}/Gemfile", "#{path}/gems.rb"]
 		gemfile_path = gemfile_paths.find{|path| File.exist?(path)}
-		
-		File.open(gemfile_path, "a") do |file| 
-			file.puts nil, "# Added by external testing:"
-			file.puts("gem #{name.to_s.dump}, path: '../../'")
-			
-			config[:extra]&.each do |line|
-				file.puts(line)
-			end
-		end
-		
+
+    File.open(gemfile_path, 'r+') do |file|
+      reg = Regexp.union(/gem "#{name.to_s}"/, /gem '#{name.to_s}'/)
+      name_excluded_lines = file.grep_v(reg)
+      file.seek(0)
+      file.puts(name_excluded_lines.join)
+      file.puts nil, "# Added by external testing:"
+      file.puts("gem #{name.to_s.dump}, path: '../../'")
+
+      config[:extra]&.each do |line|
+        file.puts(line)
+      end
+    end
+
 		system("bundle", "install", chdir: path)
 	end
 	
