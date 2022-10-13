@@ -62,6 +62,10 @@ def clone_repository(name, key, config)
 			command << "--branch" << branch
 		end
 		
+		if tag = config[:tag]
+			command << "--tag" << tag
+		end
+		
 		command << url << path
 		system(*command)
 		
@@ -70,12 +74,13 @@ def clone_repository(name, key, config)
 		
 		gemfile_paths = ["#{path}/Gemfile", "#{path}/gems.rb"]
 		gemfile_path = gemfile_paths.find{|path| File.exist?(path)}
-
+		
 		File.open(gemfile_path, 'r+') do |file|
 			pattern = /gem.*?['"]#{name}['"]/
 			lines = file.grep_v(pattern)
 
 			file.seek(0)
+			file.truncate(0)
 			file.puts(lines)
 			file.puts nil, "# Added by external testing:"
 			file.puts("gem #{name.to_s.dump}, path: '../../'")
