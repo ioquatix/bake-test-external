@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 	
 	spec.files = Dir.glob(['{bake,lib}/**/*', '*.md'], File::FNM_DOTMATCH, base: __dir__)
 	
-	spec.add_dependency "bake"
+	spec.required_ruby_version = ">= 3.0"
 	
-	spec.add_development_dependency "rspec"
+	spec.add_dependency "bake"
 end

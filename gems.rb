@@ -15,4 +15,6 @@ end
 group :test do
 	gem "sus"
 	gem "bake-test"
+	
+	gem "rspec"
 end
