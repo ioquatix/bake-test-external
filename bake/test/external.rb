@@ -21,6 +21,7 @@ def external(input: nil, gemspec: self.find_gemspec)
 	
 	input&.each do |key, config|
 		config = config.transform_keys(&:to_sym)
+		config[:env] ||= {}
 		
 		Bundler.with_unbundled_env do
 			clone_and_test(gemspec.name, key, config)
@@ -44,6 +45,7 @@ end
 
 def clone_and_test(name, key, config)
 	path = clone_repository(name, key, config)
+	
 	test_repository(path, config) or abort("External tests #{key} failed!")
 end
 
@@ -67,13 +69,12 @@ def clone_repository(name, key, config)
 		end
 		
 		command << url << path
-		system(*command)
+		system(config[:env], *command)
 		
 		# I tried using `bundle config --local local.async ../` but it simply doesn't work.
 		# system("bundle", "config", "--local", "local.async", __dir__, chdir: path)
 		
-		gemfile_paths = ["#{path}/Gemfile", "#{path}/gems.rb"]
-		gemfile_path = gemfile_paths.find{|path| File.exist?(path)}
+		gemfile_path = self.gemfile_path(path, config)
 		
 		File.open(gemfile_path, 'r+') do |file|
 			pattern = /gem.*?['"]#{name}['"]/
@@ -90,7 +91,7 @@ def clone_repository(name, key, config)
 			end
 		end
 
-		system("bundle", "install", chdir: path)
+		system(config[:env], "bundle", "install", chdir: path)
 	end
 	
 	return path
@@ -99,5 +100,49 @@ end
 def test_repository(path, config)
 	command = config.fetch(:command, DEFAULT_COMMAND)
 	
-	system(*command, chdir: path)
+	Array(command).each do |line|
+		system(config[:env], *line, chdir: path)
+	end
+end
+
+GEMFILE_NAMES = ["Gemfile", "gems.rb"]
+
+def resolve_gemfile_path(root, config)
+	if config_path = config[:gemfile]
+		path = File.join(root, config_path)
+		
+		unless File.exist?(path)
+			raise ArgumentError, "Specified gemfile path does not exist: #{config_path.inspect}!"
+		end
+		
+		# We consider this to be a custom gemfile path:
+		return false, path
+	end
+	
+	GEMFILE_NAMES.each do |name|
+		path = File.join(root, name)
+		
+		if File.exist?(path)
+			# We consider this to be a default gemfile path:
+			return true, path
+		end
+	end
+	
+	raise ArgumentError, "Could not find gem file in #{root.inspect}!"
+end
+
+def gemfile_path(root, config)
+	config.fetch(:cached_gemfile_path) do
+		root = File.expand_path(root, @root)
+		default, path = self.resolve_gemfile_path(root, config)
+		
+		config[:cached_gemfile_path] = path
+		
+		# Custom gemfile paths should be set explicitly:
+		unless default
+			config[:env]['BUNDLE_GEMFILE'] = path
+		end
+		
+		return path
+	end
 end
