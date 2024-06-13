@@ -16,6 +16,7 @@ Gem::Specification.new do |spec|
 	spec.homepage = "https://github.com/ioquatix/bake-test-external"
 	
 	spec.metadata = {
+		"documentation_uri" => "https://ioquatix.github.io/bake-test-external/",
 		"funding_uri" => "https://github.com/sponsors/ioquatix/",
 		"source_code_uri" => "https://github.com/ioquatix/bake-test-external.git",
 	}

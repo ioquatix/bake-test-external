@@ -6,20 +6,9 @@ A gem for executing external (downstream) tests.
 
 ## Usage
 
-Add a file `config/external.yaml` to your project, and add entries like:
+Please see the [project documentation](https://ioquatix.github.io/bake-test-external/) for more details.
 
-``` yaml
-bake:
-  url: https://github.com/ioquatix/bake.git
-  command: bundle exec rspec
-  # branch: optional-branch-name
-```
-
-``` bash
-$ bake test:external
-```
-
-It will clone the listed repositories, inject your current gem into the fetched gemfile, and run the given command. This has the effect of running their test suite with your latest code. You can use this as part of your test suite to receive feedback that a downstream dependent codebase is okay or broken because of a change you've made.
+  - [Getting Started](https://ioquatix.github.io/bake-test-external/guides/getting-started/index) - This guide will help you get started with `bake-test-external` and show you how to use it in your project.
 
 ## Contributing
 
