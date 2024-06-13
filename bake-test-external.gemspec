@@ -17,11 +17,12 @@ Gem::Specification.new do |spec|
 	
 	spec.metadata = {
 		"funding_uri" => "https://github.com/sponsors/ioquatix/",
+		"source_code_uri" => "https://github.com/ioquatix/bake-test-external.git",
 	}
 	
 	spec.files = Dir.glob(['{bake,lib}/**/*', '*.md'], File::FNM_DOTMATCH, base: __dir__)
 	
-	spec.required_ruby_version = ">= 2.7.6"
+	spec.required_ruby_version = ">= 3.1"
 	
 	spec.add_dependency "bake"
 end
