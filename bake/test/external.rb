@@ -41,6 +41,8 @@ def clone(input: nil, gemspec: nil)
 	
 	input&.each do |key, config|
 		config = config.transform_keys(&:to_sym)
+		config[:env] ||= {}
+		
 		controller.clone_repository(gemspec.name, key, config)
 	end
 end

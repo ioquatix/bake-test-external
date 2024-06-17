@@ -9,7 +9,11 @@ let(:context) {Bake::Context.load}
 let(:external_path) {File.join(context.root, "external/sus")}
 
 it "should clone external repository" do
-	context.call("test:external")
+	context.call("test:external:clone")
 	
 	expect(File.exist?(external_path)).to be == true
+end
+
+it "should run external tests" do
+	context.call("test:external")
 end
