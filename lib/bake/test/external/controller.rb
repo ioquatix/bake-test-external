@@ -16,6 +16,10 @@ module Bake
 					@root = Pathname.new(root || Dir.pwd)
 				end
 				
+				private def system!(*command, **options)
+					system(*command, **options, exception: true)
+				end
+				
 				def find_gemspec(pattern = "*.gemspec")
 					paths = @root.glob(pattern)
 					
@@ -29,9 +33,16 @@ module Bake
 				end
 				
 				def clone_and_test(name, key, config)
+					$stderr.puts "Cloning external repository #{key}..."
 					path = clone_repository(name, key, config)
 					
-					test_repository(path, config) or abort("External tests #{key} failed!")
+					begin
+						$stderr.puts "Running external tests #{key}..."
+						test_repository(path, config)
+					rescue
+						$stderr.puts "External tests #{key} failed!"
+						raise
+					end
 				end
 				
 				def clone_repository(name, key, config)
@@ -52,10 +63,10 @@ module Bake
 						end
 						
 						command << url << path
-						system(config[:env], *command)
+						system!(config[:env], *command)
 						
 						# I tried using `bundle config --local local.async ../` but it simply doesn't work.
-						# system("bundle", "config", "--local", "local.async", __dir__, chdir: path)
+						# system!("bundle", "config", "--local", "local.async", __dir__, chdir: path)
 						
 						gemfile_path = self.gemfile_path(path, config)
 						relative_root = @root.relative_path_from(gemfile_path.dirname)
@@ -75,7 +86,7 @@ module Bake
 							end
 						end
 				
-						system(config[:env], "bundle", "install", chdir: path)
+						system!(config[:env], "bundle", "install", chdir: path)
 					end
 					
 					return path
@@ -85,7 +96,7 @@ module Bake
 					command = config.fetch(:command, DEFAULT_COMMAND)
 					
 					Array(command).each do |line|
-						system(config[:env], *line, chdir: path)
+						system!(config[:env], *line, chdir: path)
 					end
 				end
 				

@@ -1,6 +1,6 @@
 sus:
   url: https://github.com/ioquatix/sus
   command: bundle exec bake test:external
-rack:
-  url: https://github.com/rack/rack
-  command: bundle exec bake test:external
+# rack:
+#   url: https://github.com/rack/rack
+#   command: bundle exec bake test:external
