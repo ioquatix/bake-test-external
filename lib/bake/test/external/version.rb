@@ -6,7 +6,7 @@
 module Bake
 	module Test
 		module External
-			VERSION = "0.5.0"
+			VERSION = "0.5.1"
 		end
 	end
 end
