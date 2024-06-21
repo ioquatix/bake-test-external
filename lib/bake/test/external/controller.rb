@@ -85,8 +85,11 @@ module Bake
 								file.puts(line)
 							end
 						end
-				
+						
 						system!(config[:env], "bundle", "install", chdir: path)
+					else
+						# This also sets the config[:env]['BUNDLE_GEMFILE'] if necessary:
+						self.gemfile_path(path, config)
 					end
 					
 					return path
