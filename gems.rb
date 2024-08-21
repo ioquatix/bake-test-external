@@ -17,5 +17,8 @@ end
 group :test do
 	gem "sus"
 	gem "covered"
+	gem "decode"
+	gem "rubocop"
+	
 	gem "bake-test"
 end
