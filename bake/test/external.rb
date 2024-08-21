@@ -18,6 +18,9 @@ DEFAULT_EXTERNALS_PATH = 'config/external.yaml'
 # Run external tests.
 # @parameter gemspec [String] The input gemspec path.
 def external(input: nil, gemspec: nil)
+	# Prepare the project for testing, e.g. build native extensions, etc.
+	context['before_test']&.call
+	
 	input ||= default_input
 	
 	controller = Bake::Test::External::Controller.new
