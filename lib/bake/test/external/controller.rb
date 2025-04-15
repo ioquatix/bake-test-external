@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 # Released under the MIT License.
-# Copyright, 2024, by Samuel Williams.
+# Copyright, 2024-2025, by Samuel Williams.
 
-require 'fileutils'
-require 'pathname'
+require "fileutils"
+require "pathname"
 
 module Bake
 	module Test
@@ -71,7 +71,7 @@ module Bake
 						gemfile_path = self.gemfile_path(path, config)
 						relative_root = @root.relative_path_from(gemfile_path.dirname)
 						
-						File.open(gemfile_path, 'r+') do |file|
+						File.open(gemfile_path, "r+") do |file|
 							pattern = /gem.*?['"]#{name}['"]/
 							lines = file.grep_v(pattern)
 				
@@ -136,7 +136,7 @@ module Bake
 						
 						# Custom gemfile paths should be set explicitly:
 						unless default
-							config[:env]['BUNDLE_GEMFILE'] = path
+							config[:env]["BUNDLE_GEMFILE"] = path
 						end
 						
 						path = Pathname.new(path)
