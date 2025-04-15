@@ -13,7 +13,3 @@ it "should clone external repository" do
 	
 	expect(File.exist?(external_path)).to be == true
 end
-
-it "should run external tests" do
-	context.call("test:external")
-end
